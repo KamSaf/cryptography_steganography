@@ -4,15 +4,37 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 
-def allowed_file(filename):
+
+def allowed_file(filename: str | None) -> bool:
     """
+        Function checking extension of file uploaded by user.
+
+        Parameters:
+        ---------------------------------------------
+        filename: str | None => name of the uploaded file
+
+        Returns:
+        --------------------------------------------
+        bool => well, True or False
     """
     ALLOWED_EXTENSIONS = {'jpg'}
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    if filename:
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return False
+
 
 def save_file(request: Request) -> str:
     """
+        Function saving file uploaded by user.
+
+        Parameters:
+        ---------------------------------------
+        request: Request => http POST request
+
+        Returns:
+        ---------------------------------------
+        string => path to the saved file, empty string if something went wrong
+
     """
     if 'frm_image' not in request.files or request.files['frm_image'].filename == '':
         flash('No file uploaded')
