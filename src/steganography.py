@@ -1,10 +1,20 @@
-from typing import Iterable
+from typing import Iterable, Any
 import numpy as np
 from PIL import Image
+from numpy._typing import NDArray
 
 
-def bits_provider(message) -> Iterable[int]:
+def bits_provider(message: str) -> Iterable[int]:
     """
+        Generator yelding single bits of the message.
+
+        Parameters:
+        --------------------------------------------
+        message: str => string message of which bits are yielded
+
+        Returns:
+        ---------------------------------------------
+        Iterable[int] => single bits of given string
     """
     for char in message:
         bit_repr = str(format(ord(char), 'b'))
@@ -14,8 +24,18 @@ def bits_provider(message) -> Iterable[int]:
                 yield int(bit)
 
 
-def chars_provider(pixel_red_values) -> Iterable[str]:
+def chars_provider(pixel_red_values: Any) -> Iterable[str]:
     """
+        Generator yielding single chars built from bits retrieved from image pixel data.
+
+        Parameters:
+        -----------------------------------------------
+        pixel_red_values: Any => list of integer red color values of image pixels
+
+        Returns:
+        -----------------------------------------------
+        Iterable[str] => single characters build from 8 bits of data
+
     """
     b_str = ''
     for i, pixel_red_value in enumerate(pixel_red_values):
@@ -28,21 +48,39 @@ def chars_provider(pixel_red_values) -> Iterable[str]:
         b_str += str(format(pixel_red_value, 'b'))[-1]
 
 
-def clear_low_order_bits(pixels) -> None:
+def clear_low_order_bits(pixels: NDArray) -> NDArray:
     """
+        Function setting all pixels lowest red color value bits to 0.
+
+        Parameters:
+        -----------------------------------------------------
+        pixels: NDArray => array of image pixels
+
+        Returns:
+        -----------------------------------------------------
+        NDArray => array of pixels with altered binary values
     """
     for row in range(pixels.shape[0]):
         for col in range(pixels.shape[1]):
             pixels[row, col, 0] &= ~1  # &= ~1 means that all common bits of the value and ~1 are assigned
+    return pixels
 
 
-def create_image(message, input_file, output_file) -> None:
+def create_image(message: str, input_file: str, output_file: str) -> None:
     """
+        Function hiding text message into .jpg image file.
+
+        Parameters:
+        ---------------------------------------------------
+        message: str => text to be hidden in image
+        input_file: str => name/path to file in which text is to be hidden
+        output_file: str => name/path for a created file with hidden message
+
     """
     input_img = Image.open(input_file)
     pixels = np.array(input_img)
     input_img.close()
-    clear_low_order_bits(pixels)
+    pixels = clear_low_order_bits(pixels)
     if len(message) * 8 > pixels.shape[1]:
         raise Exception('Message is too long to save in given file')
     for i, bit in enumerate(bits_provider(message)):
@@ -57,6 +95,15 @@ def create_image(message, input_file, output_file) -> None:
 
 def decode_image(input_file: str) -> str:
     """
+        Function decoding hidden message from .jpg image file.
+
+        Parameters:
+        -----------------------------------------------
+        input_file: str => name/path to a file from which message is to be retrieved
+
+        Returns:
+        str => retrieved hidden message
+
     """
     img = Image.open(input_file)
     result = ''.join(chars_provider(img.getdata(band=0)))  # band=0 means only red color is returned from getdata()
