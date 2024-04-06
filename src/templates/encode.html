@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 style="text-align: center;">Encrypt message in .jpg file</h1>
+<div style="text-align: center;">
+    <form method="POST" style="text-align: center;">
+        <p style="margin-top: 2%">Message to be hidden in file:</p>
+        <textarea cols="60" rows="10" name="frm_message" style="margin-top: 0.5%"></textarea><br>
+        <input type="file" name="frm_image" accept="image/jpg" style="margin-top: 0.5%"><br>
+        <button type="submit" style="margin-top: 2%">Encrypt</button>
+    </form>
+    <div id="output_area" style="margin-top: 5%">
+        {% if encoded_message %}
+        <img src="images/{{ encoded_message }}" width="30%" height="30%">
+        {% endif %}
+    </div>
+    <a href="{{ url_for('root') }}">
+        <h4>Go back</h4>
+    </a>
+</div>
+{% endblock %}
