@@ -109,3 +109,7 @@ def decode_image(input_file: str) -> str:
     result = ''.join(chars_provider(img.getdata(band=0)))  # band=0 means only red color is returned from getdata()
     img.close()
     return result
+
+
+if __name__ == "__main__":
+    pass

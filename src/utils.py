@@ -49,3 +49,7 @@ def save_file(request: Request) -> str:
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return 'temp/' + filename
     return ''
+
+
+if __name__ == "__main__":
+    pass
