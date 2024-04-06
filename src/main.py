@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from utils import *
+from utils import save_file
 import os
 
 
@@ -10,11 +10,10 @@ UPLOAD_FOLDER = os.path.join('static/temp/')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-
-
 @app.route("/", methods=["GET"])
 def root():
     return render_template('index.html')
+
 
 @app.route("/encode", methods=["GET", "POST"])
 def encode():
@@ -23,6 +22,7 @@ def encode():
         if filename:
             return render_template(template_name_or_list='encode.html', filename=filename)
     return render_template('encode.html')
+
 
 @app.route("/decode", methods=["GET", "POST"])
 def decode():
