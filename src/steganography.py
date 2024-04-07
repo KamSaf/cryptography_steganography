@@ -12,7 +12,7 @@ def bits_provider(message: str) -> Iterable[int]:
         --------------------------------------------
         message: str => string message of which bits are yielded
 
-        Returns:
+        Yields:
         ---------------------------------------------
         Iterable[int] => single bits of given string
     """
@@ -32,7 +32,7 @@ def chars_provider(pixel_red_values: Any) -> Iterable[str]:
         -----------------------------------------------
         pixel_red_values: Any => list of integer red color values of image pixels
 
-        Returns:
+        Yields:
         -----------------------------------------------
         Iterable[str] => single characters build from 8 bits of data
 
@@ -48,7 +48,7 @@ def chars_provider(pixel_red_values: Any) -> Iterable[str]:
         b_str += str(format(pixel_red_value, 'b'))[-1]
 
 
-def clear_low_order_bits(pixels: NDArray) -> NDArray:
+def clear_low_order_bits(pixels: NDArray):
     """
         Function setting all pixels lowest red color value bits to 0.
 
@@ -68,7 +68,7 @@ def clear_low_order_bits(pixels: NDArray) -> NDArray:
 
 def create_image(message: str, input_file: str, output_file: str) -> None:
     """
-        Function hiding text message into .jpg image file.
+        Function hiding text message into .png image file.
 
         Parameters:
         ---------------------------------------------------
@@ -95,7 +95,7 @@ def create_image(message: str, input_file: str, output_file: str) -> None:
 
 def decode_image(input_file: str) -> str:
     """
-        Function decoding hidden message from .jpg image file.
+        Function decoding hidden message from .png image file.
 
         Parameters:
         -----------------------------------------------

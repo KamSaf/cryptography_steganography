@@ -17,7 +17,7 @@ def allowed_file(filename: str | None) -> bool:
         --------------------------------------------
         bool => well, True or False
     """
-    ALLOWED_EXTENSIONS = {'jpg'}
+    ALLOWED_EXTENSIONS = {'png'}
     if filename:
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
     return False
@@ -41,13 +41,13 @@ def save_file(request: Request) -> str:
         return ''
     file = request.files['frm_image']
     if not allowed_file(file.filename):
-        flash('Only .jpg format files can be uploaded.')
+        flash('Only .png format files can be uploaded.')
         return ''
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename) if file.filename else 'file_' + datetime.now().strftime("%y%m%d_%H%M%S")
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return 'temp/' + filename
+        return filename
     return ''
 
 
