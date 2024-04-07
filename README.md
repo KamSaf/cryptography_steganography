@@ -16,7 +16,7 @@ Flask web application allowing user to encrypt and retrieve hidden messages from
 
 ## Features:
 
-- Hiding messages in .png files,
+- Hiding messages encrypted with Caesar cipher in .png files,
 - Retrieving hidden messages from .png files,
 
 
